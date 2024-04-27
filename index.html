@@ -4,14 +4,17 @@
 	<meta charset="UTF-8" />
 	<title>explode gif maker</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<input type="file" id="upload" accept="image/*"/>
-	<span id="status" style="font-family: system-ui, sans-serif;">&lt;-- select an image to explode</span>
-	<br>
-	<img id="output">
+	<div id="frame">
+		<label for="upload" id="upload-button" title="click here to select an image to explode">browse...</label>
+		<div id="status"></div>
+		<img id="output">
+	</div>
 	<div style="display: none;">
 		<!--stuff you aren't supposed to look at-->
+		<input type="file" id="upload" accept="image/*"/>
 		<canvas height="512" width="512" id="canvas">This website requires Javascript.</canvas>
 		<img src="/res/00.gif" id="boom00">
 		<img src="/res/01.gif" id="boom01">

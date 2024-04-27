@@ -1,0 +1,55 @@
+:root {
+	--foreground: #14283c;
+	--light: #215aa0;
+	--dark: #4884cd;
+	--background: #ffdef8;
+	--shadow: #9fadde;
+}
+
+@media (prefers-color-scheme: dark) { 
+	:root {
+		--foreground: #fc9505;
+		--light: #c56306;
+		--dark: #4e2e05;
+		--background: #140b05;
+		--shadow: #000000;
+	}
+}
+
+body {
+	color: var(--foreground);
+	background-color: var(--background);
+	font-family: 'IBM Plex Mono', monospace;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	justify-content: center;
+	align-items: center;
+}
+
+#frame {
+	width: 60vw;
+	max-width: calc(512px - 5rem);
+	aspect-ratio: 1;
+	padding: 2rem;
+	border: .5rem dashed var(--dark);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#upload-button {
+	padding: 1rem 4rem;
+	text-align: center;
+	background-color: var(--foreground);
+	color: var(--background);
+	border: thin solid var(--dark);
+	box-shadow: var(--shadow) .5rem .5rem;
+}
+
+#output {
+	max-width: calc(60vw + 5rem);
+	object-fit: contain;
+}

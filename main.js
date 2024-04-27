@@ -1,13 +1,10 @@
-var gif = new GIF({
+var gif = new GIF({ // set up gif.js
   workers: 2,
   quality: 10,
 	workerScript: "lib/gif.worker.js",
 });
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
+// --- CODE I STOLE FROM STACKOVERFLOW: https://stackoverflow.com/a/33407226 ---
 function createImage(w,h){ // create a image of requier size
 	var image = document.createElement("canvas"); 
 	image.width = w;
@@ -42,9 +39,27 @@ function explode(amountX,quality,image,result){
 	}
 }
 
+// --- STOLEN FROM https://attacomsian.com/blog/javascript-download-file ---
+const download = (path, filename) => {
+	// Create a new link
+	const anchor = document.createElement('a');
+	anchor.href = path;
+	anchor.download = filename;
+
+	// Append to the DOM
+	document.body.appendChild(anchor);
+
+	// Trigger `click` event
+	anchor.click();
+
+	// Remove element from DOM
+	document.body.removeChild(anchor);
+}; 
+// --- END STOLEN CODE ---
+
 function doStuff(blob) {
-	statusDisplay.textContent = "processing, please wait..."
-	document.getElementById("upload").style = "display: none;"
+	uploadButton.style="display: none;"
+	statusText.innerText = "processing..."
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
 	let image = new Image()
@@ -52,7 +67,6 @@ function doStuff(blob) {
 	let frame3 = createImage(512, 512)
 	let frame4 = createImage(512, 512)
 	let frame5 = createImage(512, 512)
-	image.style = "object-fit: contain; width: 512px; height: 512px;"
 	image.src = blob
 	image.onload = function() {
 		ctx.fillStyle = "#FFF"
@@ -67,7 +81,7 @@ function doStuff(blob) {
 		gif.addFrame(frame3, {delay: 40})
 		gif.addFrame(frame4, {delay: 40})
 		gif.addFrame(frame5, {delay: 40})
-		gif.addFrame(document.getElementById("boom00"), {delay: 40})
+		gif.addFrame(document.getElementById("boom00"), {delay: 40}) // TODO: make this better
 		gif.addFrame(document.getElementById("boom01"), {delay: 40})
 		gif.addFrame(document.getElementById("boom02"), {delay: 40})
 		gif.addFrame(document.getElementById("boom03"), {delay: 40})
@@ -94,8 +108,9 @@ function doStuff(blob) {
 }
 
 let fileInput = document.getElementById("upload")
-
-let statusDisplay = document.getElementById("status")
+let uploadButton = document.getElementById("upload-button")
+let statusText = document.getElementById("status")
+let frame = document.getElementById("frame")
 
 fileInput.addEventListener('change', (e) => {
 	let file = e.target.files[0]
@@ -107,7 +122,10 @@ fileInput.addEventListener('change', (e) => {
 })
 
 gif.on('finished', function(blob) {
-	statusDisplay.textContent = "done!"
+	statusText.style = "display: none;"
 	output = document.getElementById("output")
   output.src = URL.createObjectURL(blob)
+	output.style = "border: thin solid var(--foreground); box-shadow: var(--shadow) 1rem 1rem;"
+	frame.style = "padding: 0; border: none;"
+	download(URL.createObjectURL(blob), "explode-" + Date.now())
 })
