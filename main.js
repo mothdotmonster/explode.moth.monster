@@ -44,6 +44,7 @@ function explode(amountX,quality,image,result){
 
 function doStuff(blob) {
 	statusDisplay.textContent = "processing, please wait..."
+	document.getElementById("upload").style = "display: none;"
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
 	let image = new Image()
