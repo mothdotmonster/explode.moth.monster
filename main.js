@@ -1,3 +1,6 @@
+// Copyright 2024 Chesapeake [moth.monster]
+// SPDX-License-Identifier: MIT-0
+
 let fileInput = document.getElementById("upload")
 let uploadButton = document.getElementById("upload-button")
 let statusText = document.getElementById("status-text")
