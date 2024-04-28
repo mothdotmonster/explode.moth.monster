@@ -9,14 +9,15 @@
 </head>
 <body>
 	<div id="frame">
+		<noscript>this page requires Javascript.</noscript>
 		<label for="upload" id="upload-button" title="click here to select an image to explode">browse...</label>
-		<div id="status"></div>
+		<div id="status-text"></div>
 		<img id="output">
 	</div>
 	<div style="display: none;">
 		<!--stuff you aren't supposed to look at-->
 		<input type="file" id="upload" accept="image/*"/>
-		<canvas height="512" width="512" id="canvas">This website requires Javascript.</canvas>
+		<canvas height="512" width="512" id="canvas"></canvas>
 		<img src="/res/00.gif" id="boom00">
 		<img src="/res/01.gif" id="boom01">
 		<img src="/res/02.gif" id="boom02">
@@ -41,6 +42,7 @@
 		<img src="/res/21.gif" id="boom21">
 	</div>
 	<script src="lib/gif.js"></script>
+	<script src="fx.js"></script>
 	<script src="main.js"></script>
 </body>
 </html>

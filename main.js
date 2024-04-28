@@ -1,61 +1,14 @@
+let fileInput = document.getElementById("upload")
+let uploadButton = document.getElementById("upload-button")
+let statusText = document.getElementById("status-text")
+let frame = document.getElementById("frame")
+let output = document.getElementById("output")
+
 var gif = new GIF({ // set up gif.js
   workers: 2,
   quality: 10,
 	workerScript: "lib/gif.worker.js",
 });
-
-// --- CODE I STOLE FROM STACKOVERFLOW: https://stackoverflow.com/a/33407226 ---
-function createImage(w,h){ // create a image of requier size
-	var image = document.createElement("canvas"); 
-	image.width = w;
-	image.height =h;
-	image.ctx = image.getContext("2d");  // tack the context onto the image
-	return image;
-}
-
-function explode(amountX,quality,image,result){
-	var w = image.width
-	var h = image.height
-	var easeW = (amountX/w)*4 // down unit 0 to 4 top to bottom
-	var wh = w/2   // half size for lazy coder
-	var hh = h/2            
-	var stepUnit = (0.5/(wh))*quality
-	result.ctx.drawImage(image,0,0)
-	for(i = 0; i < 0.5; i += stepUnit) {  // all done in normalised size                                             
-			var r = i*2;  // normalise i
-			var x = r*wh;  // get the clip x destination pos relative to center
-			var y = r*hh;  // get the clip x  destination pos relative to center
-			var xw = w-(x*2);  // get the clip  destination width
-			var rx = (x)*easeW;   // get the image source pos
-			var ry = (y)*easeW;
-			var rw = w-(rx*2);     // get the image source size
-			var rh = h-(ry*2);
-			result.ctx.save();
-			result.ctx.beginPath();
-			result.ctx.arc(wh,hh,xw/2,0,Math.PI*2);
-			result.ctx.clip();
-			result.ctx.drawImage(image,rx,ry,rw,rh,0,0,w,h);
-			result.ctx.restore();
-	}
-}
-
-// --- STOLEN FROM https://attacomsian.com/blog/javascript-download-file ---
-const download = (path, filename) => {
-	// Create a new link
-	const anchor = document.createElement('a');
-	anchor.href = path;
-	anchor.download = filename;
-
-	// Append to the DOM
-	document.body.appendChild(anchor);
-
-	// Trigger `click` event
-	anchor.click();
-
-	// Remove element from DOM
-	document.body.removeChild(anchor);
-}; 
-// --- END STOLEN CODE ---
 
 function doStuff(blob) {
 	uploadButton.style="display: none;"
@@ -107,11 +60,6 @@ function doStuff(blob) {
 	}
 }
 
-let fileInput = document.getElementById("upload")
-let uploadButton = document.getElementById("upload-button")
-let statusText = document.getElementById("status")
-let frame = document.getElementById("frame")
-
 fileInput.addEventListener('change', (e) => {
 	let file = e.target.files[0]
 	let reader = new FileReader()
@@ -123,9 +71,15 @@ fileInput.addEventListener('change', (e) => {
 
 gif.on('finished', function(blob) {
 	statusText.style = "display: none;"
-	output = document.getElementById("output")
-  output.src = URL.createObjectURL(blob)
+	blobURL = URL.createObjectURL(blob)
+  output.src = blobURL
 	output.style = "border: thin solid var(--foreground); box-shadow: var(--shadow) 1rem 1rem;"
 	frame.style = "padding: 0; border: none;"
-	download(URL.createObjectURL(blob), "explode-" + Date.now())
+
+	let anchor = document.createElement('a') // create easy download on click
+	anchor.href = blobURL
+	anchor.download = "explode-" + Date.now() // default filename
+	output.parentElement.appendChild(anchor)
+	anchor.appendChild(output)
+	anchor.title = "click to download"
 })
