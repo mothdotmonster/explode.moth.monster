@@ -37,28 +37,9 @@ function doStuff(blob) {
 		gif.addFrame(frame3, {delay: 40})
 		gif.addFrame(frame4, {delay: 40})
 		gif.addFrame(frame5, {delay: 40})
-		gif.addFrame(document.getElementById("boom00"), {delay: 40}) // TODO: make this better
-		gif.addFrame(document.getElementById("boom01"), {delay: 40})
-		gif.addFrame(document.getElementById("boom02"), {delay: 40})
-		gif.addFrame(document.getElementById("boom03"), {delay: 40})
-		gif.addFrame(document.getElementById("boom04"), {delay: 40})
-		gif.addFrame(document.getElementById("boom05"), {delay: 40})
-		gif.addFrame(document.getElementById("boom06"), {delay: 40})
-		gif.addFrame(document.getElementById("boom07"), {delay: 40})
-		gif.addFrame(document.getElementById("boom08"), {delay: 40})
-		gif.addFrame(document.getElementById("boom09"), {delay: 40})
-		gif.addFrame(document.getElementById("boom10"), {delay: 40})
-		gif.addFrame(document.getElementById("boom11"), {delay: 40})
-		gif.addFrame(document.getElementById("boom12"), {delay: 40})
-		gif.addFrame(document.getElementById("boom13"), {delay: 40})
-		gif.addFrame(document.getElementById("boom14"), {delay: 40})
-		gif.addFrame(document.getElementById("boom15"), {delay: 40})
-		gif.addFrame(document.getElementById("boom16"), {delay: 40})
-		gif.addFrame(document.getElementById("boom17"), {delay: 40})
-		gif.addFrame(document.getElementById("boom18"), {delay: 40})
-		gif.addFrame(document.getElementById("boom19"), {delay: 40})
-		gif.addFrame(document.getElementById("boom20"), {delay: 40})
-		gif.addFrame(document.getElementById("boom21"), {delay: 40})
+		for (let i = 0; i < 22; i++) { // add all the boom frames
+			gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
+		}
 		gif.render()
 	}
 }
