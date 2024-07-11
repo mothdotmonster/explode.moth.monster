@@ -53,3 +53,21 @@ body {
 	max-width: calc(60vw + 5rem);
 	object-fit: contain;
 }
+
+footer {
+	position: fixed;
+	bottom: 1rem;
+	left: 0px;
+	width: 100vw;
+	text-align: center;
+}
+
+a:link {
+	color: var(--light);
+}
+a:visited {
+	color: var(--light);
+}
+a:hover {
+	color: var(--dark);
+}
