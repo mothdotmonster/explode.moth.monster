@@ -44,6 +44,13 @@ function doStuff(blob) {
 	}
 }
 
+async function addComment(blob) { // disgusting byte hacks
+	let comment = new Uint8Array([33, 254, 20, 101, 120, 112, 108, 111, 100, 101, 46, 109, 111, 116, 104, 46, 109, 111, 110, 115, 116, 101, 114, 0, 59]) //"explode.moth.monster"
+	let isMagic = (element) => element == 59 // matches the terminator byte so we can remove it
+	bytes = await blob.bytes() // computers were only ever meant to do one thing at a time
+	return new Blob([bytes.slice(0, bytes.findLastIndex(isMagic)), comment], {type: "image/gif"}) // gif surgery
+}
+
 fileInput.addEventListener('change', (e) => {
 	let file = e.target.files[0]
 	let reader = new FileReader()
@@ -53,13 +60,13 @@ fileInput.addEventListener('change', (e) => {
 	reader.readAsDataURL(file)
 })
 
-gif.on('finished', function(blob) {
+gif.on('finished', async function(blob) {
+	blob = await addComment(blob) // add comment to output gif
 	statusText.style = "display: none;"
 	blobURL = URL.createObjectURL(blob)
   output.src = blobURL
 	output.style = "border: thin solid var(--foreground); box-shadow: var(--shadow) 1rem 1rem;"
 	frame.style = "padding: 0; border: none;"
-
 	let anchor = document.createElement('a') // create easy download on click
 	anchor.href = blobURL
 	anchor.download = "explode-" + Date.now() // default filename
