@@ -8,8 +8,8 @@ let frame = document.getElementById("frame")
 let output = document.getElementById("output")
 
 var gif = new GIF({ // set up gif.js
-  workers: 2,
-  quality: 10,
+	workers: 2,
+	quality: 10,
 	workerScript: "lib/gif.worker.js",
 });
 
@@ -64,7 +64,7 @@ gif.on('finished', async function(blob) {
 	blob = await addComment(blob) // add comment to output gif
 	statusText.style = "display: none;"
 	blobURL = URL.createObjectURL(blob)
-  output.src = blobURL
+	output.src = blobURL
 	output.style = "border: thin solid var(--foreground); box-shadow: var(--shadow) 1rem 1rem;"
 	frame.style = "padding: 0; border: none;"
 	let anchor = document.createElement('a') // create easy download on click
