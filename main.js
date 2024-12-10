@@ -6,6 +6,7 @@ let uploadButton = document.getElementById("upload-button")
 let statusText = document.getElementById("status-text")
 let frame = document.getElementById("frame")
 let output = document.getElementById("output")
+let radioButtons = document.getElementById("radio-buttons")
 
 var gif = new GIF({ // set up gif.js
 	workers: 2,
@@ -15,6 +16,7 @@ var gif = new GIF({ // set up gif.js
 
 function doStuff(blob) {
 	uploadButton.style="display: none;"
+	radioButtons.style="display: none;"
 	statusText.innerText = "processing..."
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
@@ -37,8 +39,15 @@ function doStuff(blob) {
 		gif.addFrame(frame3, {delay: 40})
 		gif.addFrame(frame4, {delay: 40})
 		gif.addFrame(frame5, {delay: 40})
-		for (let i = 0; i < 22; i++) { // add all the boom frames
-			gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
+		switch (document.querySelector('input[name="gif-select"]:checked').value) { // check selected explosion and add frames
+			case "boom":
+				for (let i = 0; i < 22; i++) {
+					gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
+				}
+			case "house":
+				for (let i = 8; i < 35; i++) {
+					gif.addFrame(document.getElementById("house" + String(i).padStart(2, '0')), {delay: 40})
+				}
 		}
 		gif.render()
 	}
@@ -66,7 +75,7 @@ gif.on('finished', async function(blob) {
 	blobURL = URL.createObjectURL(blob)
 	output.src = blobURL
 	output.style = "border: thin solid var(--foreground); box-shadow: var(--shadow) 1rem 1rem;"
-	frame.style = "padding: 0; border: none;"
+	frame.style = "padding: 0; border: none; max-width: 512px"
 	let anchor = document.createElement('a') // create easy download on click
 	anchor.href = blobURL
 	anchor.download = "explode-" + Date.now() // default filename

@@ -39,6 +39,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 }
 
 #upload-button {
@@ -48,6 +49,42 @@ body {
 	color: var(--background);
 	border: thin solid var(--dark);
 	box-shadow: var(--shadow) .5rem .5rem;
+	margin-top: 4rem;
+}
+
+#radio-buttons {
+	margin: 1rem;
+	text-align: center;
+}
+
+input[type="radio"] {
+	appearance: none;
+	width: 2em;
+	height: 2em;
+	border: .2em solid var(--foreground);
+	border-radius: 50%;
+	background-clip: content-box;
+	padding: .3em;
+}
+
+.omg-guys-how-do-i-center-a-div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.omg-guys-how-do-i-center-a-div label {
+	margin: .5em;
+}
+
+
+.omg-guys-how-do-i-center-a-div label:not(:last-child) {
+	margin-right: 1em
+}
+
+
+input[type="radio"]:checked {
+	background-color: var(--foreground);
 }
 
 #output {
@@ -92,9 +129,7 @@ a:hover {
 
 .mothvertising-box {
 	margin-top: 2rem;
-	margin-bottom: 2rem;
 }
-
 
 .mothvertising-box div {
 	color: var(--background);
