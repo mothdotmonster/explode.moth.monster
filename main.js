@@ -44,10 +44,12 @@ function doStuff(blob) {
 				for (let i = 0; i < 22; i++) {
 					gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
 				}
+				break
 			case "house":
 				for (let i = 8; i < 35; i++) {
 					gif.addFrame(document.getElementById("house" + String(i).padStart(2, '0')), {delay: 40})
 				}
+				break
 		}
 		gif.render()
 	}
