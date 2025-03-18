@@ -57,34 +57,19 @@ body {
 	text-align: center;
 }
 
-input[type="radio"] {
-	appearance: none;
-	width: 2em;
-	height: 2em;
-	border: .2em solid var(--foreground);
-	border-radius: 50%;
-	background-clip: content-box;
-	padding: .3em;
-}
-
-.omg-guys-how-do-i-center-a-div {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.omg-guys-how-do-i-center-a-div label {
-	margin: .5em;
-}
-
-
-.omg-guys-how-do-i-center-a-div label:not(:last-child) {
-	margin-right: 1em
-}
-
-
-input[type="radio"]:checked {
+select {
+	font: inherit;
+	color: var(--background);
 	background-color: var(--foreground);
+	margin: auto;
+	margin-top: .5em;
+	padding: .5em 1em;
+	border: thin solid var(--dark);
+	box-shadow: var(--shadow) .5rem .5rem;
+}
+
+#upload-button:hover, select:hover {
+	background-color: var(--light);
 }
 
 #output {

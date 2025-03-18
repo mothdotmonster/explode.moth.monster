@@ -39,8 +39,9 @@ function doStuff(blob) {
 		gif.addFrame(frame3, {delay: 40})
 		gif.addFrame(frame4, {delay: 40})
 		gif.addFrame(frame5, {delay: 40})
-		switch (document.querySelector('input[name="gif-select"]:checked').value) { // check selected explosion and add frames
-			case "boom":
+		// TODO: generate this switch dynamically
+		switch (document.querySelector('select[name="gif-select"]').value) { // check selected explosion and add frames
+			case "boom": 
 				for (let i = 0; i < 22; i++) {
 					gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
 				}
@@ -48,6 +49,11 @@ function doStuff(blob) {
 			case "house":
 				for (let i = 8; i < 35; i++) {
 					gif.addFrame(document.getElementById("house" + String(i).padStart(2, '0')), {delay: 40})
+				}
+				break
+			case "earth":
+				for (let i = 0; i < 29; i++) {
+					gif.addFrame(document.getElementById("earth" + String(i).padStart(2, '0')), {delay: 40})
 				}
 				break
 		}

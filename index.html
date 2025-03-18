@@ -31,10 +31,11 @@
 		<label for="upload" id="upload-button" title="click here to select an image to explode">browse...</label>
 		<div id="radio-buttons">
 			<legend>pick your explosion:</legend>
-			<div class="omg-guys-how-do-i-center-a-div">
-				<input type="radio" id="radio-boom" name="gif-select" value="boom" checked> <label for="radio-boom">nuke</label>
-				<input type="radio" id="radio-house" name="gif-select" value="house"> <label for="radio-house">house</label>
-			</div>
+			<select name="gif-select">
+				<option value="boom" selected>nuke</option>
+				<option value="house">house</option>
+				<option value="earth">earth</option>
+			</select>
 		</div>
 		<div id="status-text"></div>
 		<img id="output">
@@ -52,6 +53,7 @@
 		<!--stuff you aren't supposed to look at-->
 		<input type="file" id="upload" accept="image/*"/>
 		<canvas height="512" width="512" id="canvas"></canvas>
+		<!-- TODO: load these dynamically -->
 		<img src="/res/00.gif" id="boom00">
 		<img src="/res/01.gif" id="boom01">
 		<img src="/res/02.gif" id="boom02">
@@ -103,6 +105,37 @@
 		<img src="/res/house/33.gif" id="house33">
 		<img src="/res/house/34.gif" id="house34">
 		<img src="/res/house/35.gif" id="house35">
+
+		<img src="/res/earth/00.gif" id="earth00">
+		<img src="/res/earth/01.gif" id="earth01">
+		<img src="/res/earth/02.gif" id="earth02">
+		<img src="/res/earth/03.gif" id="earth03">
+		<img src="/res/earth/04.gif" id="earth04">
+		<img src="/res/earth/05.gif" id="earth05">
+		<img src="/res/earth/06.gif" id="earth06">
+		<img src="/res/earth/07.gif" id="earth07">
+		<img src="/res/earth/08.gif" id="earth08">
+		<img src="/res/earth/09.gif" id="earth09">
+		<img src="/res/earth/10.gif" id="earth10">
+		<img src="/res/earth/11.gif" id="earth11">
+		<img src="/res/earth/12.gif" id="earth12">
+		<img src="/res/earth/13.gif" id="earth13">
+		<img src="/res/earth/14.gif" id="earth14">
+		<img src="/res/earth/15.gif" id="earth15">
+		<img src="/res/earth/16.gif" id="earth16">
+		<img src="/res/earth/17.gif" id="earth17">
+		<img src="/res/earth/18.gif" id="earth18">
+		<img src="/res/earth/19.gif" id="earth19">
+		<img src="/res/earth/20.gif" id="earth20">
+		<img src="/res/earth/21.gif" id="earth21">
+		<img src="/res/earth/22.gif" id="earth22">
+		<img src="/res/earth/23.gif" id="earth23">
+		<img src="/res/earth/24.gif" id="earth24">
+		<img src="/res/earth/25.gif" id="earth25">
+		<img src="/res/earth/26.gif" id="earth26">
+		<img src="/res/earth/27.gif" id="earth27">
+		<img src="/res/earth/28.gif" id="earth28">
+		<img src="/res/earth/29.gif" id="earth29">
 	</div>
 	<script src="lib/gif.js"></script>
 	<script src="fx.js"></script>
