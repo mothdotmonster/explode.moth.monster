@@ -79,10 +79,14 @@ select {
 
 footer {
 	position: fixed;
-	bottom: 1rem;
+	bottom: 0px;
 	left: 0px;
 	width: 100vw;
-	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 1rem 0;
 }
 
 a:link {
@@ -162,4 +166,17 @@ a:hover {
 .mothvertising-outer {
 	width: 100vw;
 	margin-left: calc(-50vw + 50%);
+	z-index: 100;
+}
+
+.silly-buttons {
+	padding: 0;
+	margin: 0;
+}
+
+.silly-buttons img {
+	border-width: thin;
+	border-style: solid;
+	border-color: var(--foreground);
+	box-shadow: var(--shadow) .25rem .25rem;
 }
