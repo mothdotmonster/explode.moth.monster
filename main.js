@@ -15,6 +15,12 @@ var gif = new GIF({ // set up gif.js
 });
 
 function doStuff(blob) {
+	// set which ones implode instead of explode
+	if (document.querySelector('select[name="gif-select"]').value == "supernova") {
+		implode = true
+	} else {
+		implode = false
+	}
 	uploadButton.style="display: none;"
 	radioButtons.style="display: none;"
 	statusText.innerText = "processing..."
@@ -30,10 +36,18 @@ function doStuff(blob) {
 		ctx.fillStyle = "#FFF"
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
 		ctx.drawImage(image, 0, 0, 512, 512)
-		explode(25, .5, canvas, frame2)
-		explode(50, .5, canvas, frame3)
-		explode(75, .5, canvas, frame4)
-		explode(100, .5, canvas, frame5)
+		// implosion has a bit of an exponential curve to it because i like the look, otherwise it feels too slow.
+		if (implode) {
+			explode(-25, .5, canvas, frame2)
+			explode(-50, .5, canvas, frame3)
+			explode(-100, .5, canvas, frame4)
+			explode(-200, .5, canvas, frame5)
+		} else {
+			explode(25, .5, canvas, frame2)
+			explode(50, .5, canvas, frame3)
+			explode(75, .5, canvas, frame4)
+			explode(100, .5, canvas, frame5)
+		}
 		gif.addFrame(canvas, {delay: 40})
 		gif.addFrame(frame2, {delay: 40})
 		gif.addFrame(frame3, {delay: 40})
@@ -54,6 +68,11 @@ function doStuff(blob) {
 			case "earth":
 				for (let i = 0; i < 29; i++) {
 					gif.addFrame(document.getElementById("earth" + String(i).padStart(2, '0')), {delay: 40})
+				}
+				break
+			case "supernova":
+				for (let i = 0; i < 29; i++) {
+					gif.addFrame(document.getElementById("supernova" + String(i).padStart(2, '0')), {delay: 40})
 				}
 				break
 		}
