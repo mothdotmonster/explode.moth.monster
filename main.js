@@ -7,6 +7,7 @@ let statusText = document.getElementById("status-text")
 let frame = document.getElementById("frame")
 let output = document.getElementById("output")
 let radioButtons = document.getElementById("radio-buttons")
+let implode, greenscreen = false
 
 var gif = new GIF({ // set up gif.js
 	workers: 2,
@@ -14,12 +15,22 @@ var gif = new GIF({ // set up gif.js
 	workerScript: "lib/gif.worker.js",
 });
 
+function overlay(img1, img2) { // overlay two images on top of eachother
+	canvas = createImage(512, 512)
+	ctx = canvas.ctx
+	ctx.fillStyle = "#FFF"
+	ctx.fillRect(0, 0, 512, 512)
+	ctx.drawImage(img1, 0, 0, 512, 512)
+	ctx.drawImage(img2, 0, 0, 512, 512)
+	return canvas
+}
+
 function doStuff(blob) {
-	// set which ones implode instead of explode
+	// set booleans for later
 	if (document.querySelector('select[name="gif-select"]').value == "supernova") {
 		implode = true
-	} else {
-		implode = false
+	} else if (document.querySelector('select[name="gif-select"]').value == "airstrikes") {
+		greenscreen = true
 	}
 	uploadButton.style="display: none;"
 	radioButtons.style="display: none;"
@@ -36,46 +47,59 @@ function doStuff(blob) {
 		ctx.fillStyle = "#FFF"
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
 		ctx.drawImage(image, 0, 0, 512, 512)
-		// implosion has a bit of an exponential curve to it because i like the look, otherwise it feels too slow.
-		if (implode) {
-			explode(-25, .5, canvas, frame2)
-			explode(-50, .5, canvas, frame3)
-			explode(-100, .5, canvas, frame4)
-			explode(-200, .5, canvas, frame5)
+		// handle green screen overlay separately from implode/explode
+		if (greenscreen) {
+			gif.addFrame(canvas, {delay: 160})
+			switch (document.querySelector('select[name="gif-select"]').value) {
+				case "airstrikes":
+					for (let i = 0; i < 26; i++) {
+						frame = overlay(image, document.getElementById("airstrikes" + String(i).padStart(2, '0')))
+						gif.addFrame(frame, {delay: 40})
+					}
+					break
+				}
 		} else {
-			explode(25, .5, canvas, frame2)
-			explode(50, .5, canvas, frame3)
-			explode(75, .5, canvas, frame4)
-			explode(100, .5, canvas, frame5)
-		}
-		gif.addFrame(canvas, {delay: 40})
-		gif.addFrame(frame2, {delay: 40})
-		gif.addFrame(frame3, {delay: 40})
-		gif.addFrame(frame4, {delay: 40})
-		gif.addFrame(frame5, {delay: 40})
-		// TODO: generate this switch dynamically
-		switch (document.querySelector('select[name="gif-select"]').value) { // check selected explosion and add frames
-			case "boom": 
-				for (let i = 0; i < 22; i++) {
-					gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
+			// implosion has a bit of an exponential curve to it because i like the look, otherwise it feels too slow.
+			if (implode) {
+				explode(-25, .5, canvas, frame2)
+				explode(-50, .5, canvas, frame3)
+				explode(-100, .5, canvas, frame4)
+				explode(-200, .5, canvas, frame5)
+			} else {
+				explode(25, .5, canvas, frame2)
+				explode(50, .5, canvas, frame3)
+				explode(75, .5, canvas, frame4)
+				explode(100, .5, canvas, frame5)
+			}
+			gif.addFrame(canvas, {delay: 40})
+			gif.addFrame(frame2, {delay: 40})
+			gif.addFrame(frame3, {delay: 40})
+			gif.addFrame(frame4, {delay: 40})
+			gif.addFrame(frame5, {delay: 40})
+			// TODO: generate this switch dynamically
+			switch (document.querySelector('select[name="gif-select"]').value) { // check selected explosion and add frames
+				case "boom": 
+					for (let i = 0; i < 22; i++) {
+						gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
+					}
+					break
+				case "house":
+					for (let i = 8; i < 35; i++) {
+						gif.addFrame(document.getElementById("house" + String(i).padStart(2, '0')), {delay: 40})
+					}
+					break
+				case "earth":
+					for (let i = 0; i < 29; i++) {
+						gif.addFrame(document.getElementById("earth" + String(i).padStart(2, '0')), {delay: 40})
+					}
+					break
+				case "supernova":
+					for (let i = 0; i < 29; i++) {
+						gif.addFrame(document.getElementById("supernova" + String(i).padStart(2, '0')), {delay: 40})
+					}
+					break
 				}
-				break
-			case "house":
-				for (let i = 8; i < 35; i++) {
-					gif.addFrame(document.getElementById("house" + String(i).padStart(2, '0')), {delay: 40})
-				}
-				break
-			case "earth":
-				for (let i = 0; i < 29; i++) {
-					gif.addFrame(document.getElementById("earth" + String(i).padStart(2, '0')), {delay: 40})
-				}
-				break
-			case "supernova":
-				for (let i = 0; i < 29; i++) {
-					gif.addFrame(document.getElementById("supernova" + String(i).padStart(2, '0')), {delay: 40})
-				}
-				break
-		}
+			}
 		gif.render()
 	}
 }
