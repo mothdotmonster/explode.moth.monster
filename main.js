@@ -107,7 +107,7 @@ function doStuff(blob) {
 async function addComment(blob) { // disgusting byte hacks
 	let comment = new Uint8Array([33, 254, 20, 101, 120, 112, 108, 111, 100, 101, 46, 109, 111, 116, 104, 46, 109, 111, 110, 115, 116, 101, 114, 0, 59]) //"explode.moth.monster"
 	let isMagic = (element) => element == 59 // matches the terminator byte so we can remove it
-	bytes = await blob.bytes() // computers were only ever meant to do one thing at a time
+	bytes = new Uint8Array(await blob.arrayBuffer()) // computers were only ever meant to do one thing at a time
 	return new Blob([bytes.slice(0, bytes.findLastIndex(isMagic)), comment], {type: "image/gif"}) // gif surgery
 }
 
