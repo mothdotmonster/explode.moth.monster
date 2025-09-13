@@ -7,6 +7,7 @@ let statusText = document.getElementById("status-text")
 let frame = document.getElementById("frame")
 let output = document.getElementById("output")
 let radioButtons = document.getElementById("radio-buttons")
+let reloader = document.getElementById("reloader")
 let implode, greenscreen = false
 
 var gif = new GIF({ // set up gif.js
@@ -66,9 +67,9 @@ function doStuff(blob) {
 				explode(-100, .5, canvas, frame4)
 				explode(-200, .5, canvas, frame5)
 			} else {
-				explode(25, .5, canvas, frame2)
-				explode(50, .5, canvas, frame3)
-				explode(75, .5, canvas, frame4)
+				explode(10, .5, canvas, frame2)
+				explode(20, .5, canvas, frame3)
+				explode(50, .5, canvas, frame4)
 				explode(100, .5, canvas, frame5)
 			}
 			gif.addFrame(canvas, {delay: 40})
@@ -133,4 +134,5 @@ gif.on('finished', async function(blob) {
 	output.parentElement.appendChild(anchor)
 	anchor.appendChild(output)
 	anchor.title = "click to download"
+	reloader.style = "visibility: visible !important"
 })
