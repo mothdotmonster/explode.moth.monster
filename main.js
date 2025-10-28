@@ -6,8 +6,10 @@ let uploadButton = document.getElementById("upload-button")
 let statusText = document.getElementById("status-text")
 let frame = document.getElementById("frame")
 let output = document.getElementById("output")
+let preview = document.getElementById("preview")
 let radioButtons = document.getElementById("radio-buttons")
 let reloader = document.getElementById("reloader")
+let gifSelect = document.getElementById("gif-select")
 let implode, greenscreen = false
 
 var gif = new GIF({ // set up gif.js
@@ -26,15 +28,25 @@ function overlay(img1, img2) { // overlay two images on top of eachother
 	return canvas
 }
 
+window.onerror = (e) => { // tell user if an error happens
+	statusText.innerText = "oh no! " + e
+}
+window.onunhandledrejection = (e) => { // of COURSE async is special
+	statusText.innerText = "oh no! " + e.reason
+}
+
+gifSelect.addEventListener("input", (_e) => {preview.src = "/res/preview/" + gifSelect.value + ".gif"}) // handle switching around the preview gifs
+
 function doStuff(blob) {
 	// set booleans for later
-	if (document.querySelector('select[name="gif-select"]').value == "supernova") {
+	if (gifSelect.value == "supernova") {
 		implode = true
-	} else if (document.querySelector('select[name="gif-select"]').value == "airstrikes") {
+	} else if (gifSelect.value == "airstrikes") {
 		greenscreen = true
 	}
 	uploadButton.style="display: none;"
 	radioButtons.style="display: none;"
+	preview.style="display: none;"
 	statusText.innerText = "processing..."
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
@@ -51,7 +63,7 @@ function doStuff(blob) {
 		// handle green screen overlay separately from implode/explode
 		if (greenscreen) {
 			gif.addFrame(canvas, {delay: 160})
-			switch (document.querySelector('select[name="gif-select"]').value) {
+			switch (gifSelect.value) {
 				case "airstrikes":
 					for (let i = 0; i < 26; i++) {
 						frame = overlay(image, document.getElementById("airstrikes" + String(i).padStart(2, '0')))
@@ -78,7 +90,7 @@ function doStuff(blob) {
 			gif.addFrame(frame4, {delay: 40})
 			gif.addFrame(frame5, {delay: 40})
 			// TODO: generate this switch dynamically
-			switch (document.querySelector('select[name="gif-select"]').value) { // check selected explosion and add frames
+			switch (gifSelect.value) { // check selected explosion and add frames
 				case "boom": 
 					for (let i = 0; i < 22; i++) {
 						gif.addFrame(document.getElementById("boom" + String(i).padStart(2, '0')), {delay: 40})
@@ -112,7 +124,7 @@ async function addComment(blob) { // disgusting byte hacks
 	return new Blob([bytes.slice(0, bytes.findLastIndex(isMagic)), comment], {type: "image/gif"}) // gif surgery
 }
 
-fileInput.addEventListener('change', (e) => {
+fileInput.addEventListener('change', (e) => { // listen for when the user selects an image
 	let file = e.target.files[0]
 	let reader = new FileReader()
 	reader.onloadend = () => {

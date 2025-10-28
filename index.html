@@ -32,7 +32,7 @@
 		<label for="upload" id="upload-button" title="click here to select an image to explode">browse...</label>
 		<div id="radio-buttons">
 			<legend>pick your explosion:</legend>
-			<select name="gif-select">
+			<select name="gif-select" id="gif-select">
 				<optgroup label="explode">
 					<option value="boom" selected>nuke</option>
 					<option value="house">house</option>
@@ -46,6 +46,7 @@
 				</optgroup>
 			</select>
 		</div>
+		<img id="preview" height="128" width="128" src="/res/preview/boom.gif">
 		<div id="status-text"></div>
 		<img id="output">
 	</div>
