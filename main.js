@@ -41,7 +41,7 @@ function doStuff(blob) {
 	// set booleans for later
 	if (gifSelect.value == "supernova") {
 		implode = true
-	} else if (gifSelect.value == "airstrikes") {
+	} else if (gifSelect.value == "airstrikes", "deltarune") {
 		greenscreen = true
 	}
 	uploadButton.style="display: none;"
@@ -68,6 +68,12 @@ function doStuff(blob) {
 					for (let i = 0; i < 26; i++) {
 						frame = overlay(image, document.getElementById("airstrikes" + String(i).padStart(2, '0')))
 						gif.addFrame(frame, {delay: 40})
+					}
+					break
+				case "deltarune":
+					for (let i = 0; i < 16; i++) {
+						frame = overlay(image, document.getElementById("deltarune" + String(i).padStart(2, '0')))
+						gif.addFrame(frame, {delay: 100})
 					}
 					break
 				}
