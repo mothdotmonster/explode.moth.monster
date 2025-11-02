@@ -41,7 +41,7 @@ function doStuff(blob) {
 	// set booleans for later
 	if (gifSelect.value == "supernova") {
 		implode = true
-	} else if (gifSelect.value == "airstrikes", "deltarune") {
+	} else if (gifSelect.value == ("airstrikes", "deltarune")) {
 		greenscreen = true
 	}
 	uploadButton.style="display: none;"
