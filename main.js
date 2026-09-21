@@ -4,7 +4,7 @@
 let fileInput = document.getElementById("upload")
 let uploadButton = document.getElementById("upload-button")
 let statusText = document.getElementById("status-text")
-let frame = document.getElementById("frame")
+let notThatFrame = document.getElementById("frame") // whoops, already had something else called that
 let output = document.getElementById("output")
 let preview = document.getElementById("preview")
 let radioButtons = document.getElementById("radio-buttons")
@@ -157,7 +157,7 @@ gif.on('finished', async function(blob) {
 	blobURL = URL.createObjectURL(blob)
 	output.src = blobURL
 	output.style = "border: thin solid var(--foreground); box-shadow: var(--shadow) 1rem 1rem;"
-	frame.style = "padding: 0; border: none; max-width: 512px"
+	notThatFrame.style = "padding: 0; border: none; max-width: 512px"
 	let anchor = document.createElement('a') // create easy download on click
 	anchor.href = blobURL
 	anchor.download = "explode-" + Date.now() // default filename
