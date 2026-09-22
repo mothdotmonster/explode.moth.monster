@@ -10,7 +10,8 @@ let preview = document.getElementById("preview")
 let radioButtons = document.getElementById("radio-buttons")
 let reloader = document.getElementById("reloader")
 let gifSelect = document.getElementById("gif-select")
-let implode, greenscreen = false
+let checkboxes = document.getElementById("checkboxes")
+let implode, greenscreen, correctAspect = false
 
 var gif = new GIF({ // set up gif.js
 	workers: 2,
@@ -23,9 +24,19 @@ function overlay(img1, img2) { // overlay two images on top of eachother
 	ctx = canvas.ctx
 	ctx.fillStyle = "#FFF"
 	ctx.fillRect(0, 0, 512, 512)
-	ctx.drawImage(img1, 0, 0, 512, 512)
+	drawAspectCorrected(img1, ctx)
 	ctx.drawImage(img2, 0, 0, 512, 512)
 	return canvas
+}
+
+function drawAspectCorrected(image, ctx) {
+	if (correctAspect) {
+		let ratio = image.naturalWidth / image.naturalHeight
+		ratio > 1 ? ctx.drawImage(image, 0, (512 - 512 / ratio) / 2, 512, 512 / ratio) : ctx.drawImage(image, (512 - 512 * ratio) / 2, 0, 512 * ratio, 512) // magic :)
+	} else {
+		ctx.drawImage(image, 0, 0, 512, 512)
+	}
+	return ctx
 }
 
 window.onerror = (e) => { // tell user if an error happens
@@ -44,8 +55,10 @@ function doStuff(blob) {
 	} else if ((gifSelect.value == "airstrikes") + (gifSelect.value == "deltarune") + (gifSelect.value == "missile") + (gifSelect.value == "jet")) { // TODO: Make this not suck
 		greenscreen = true
 	}
+	correctAspect = document.getElementById("correctAspect").checked
 	uploadButton.style="display: none;"
 	radioButtons.style="display: none;"
+	checkboxes.style="display: none;"
 	preview.style="display: none;"
 	statusText.innerText = "processing..."
 	let canvas = document.getElementById("canvas")
@@ -59,7 +72,7 @@ function doStuff(blob) {
 	image.onload = function() {
 		ctx.fillStyle = "#FFF"
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
-		ctx.drawImage(image, 0, 0, 512, 512)
+		drawAspectCorrected(image, ctx)
 		// handle green screen overlay separately from implode/explode
 		if (greenscreen) {
 			gif.addFrame(canvas, {delay: 160})
