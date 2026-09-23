@@ -47,13 +47,16 @@ window.onunhandledrejection = (e) => { // of COURSE async is special
 }
 
 gifSelect.addEventListener("input", (_e) => {preview.src = "/res/preview/" + gifSelect.value + ".gif"}) // handle switching around the preview gifs
+preview.src = "/res/preview/" + gifSelect.value + ".gif" // ...correct it in case your browser remembered the last setting
 
 function doStuff(blob) {
 	// set booleans for later
 	if (gifSelect.value == "supernova") {
-		implode = true
+		implode = "implode"
 	} else if ((gifSelect.value == "airstrikes") + (gifSelect.value == "deltarune") + (gifSelect.value == "missile") + (gifSelect.value == "jet")) { // TODO: Make this not suck
 		greenscreen = true
+	} else if (gifSelect.value == "wibble") {
+		implode = "wibble"
 	}
 	correctAspect = document.getElementById("correctAspect").checked
 	uploadButton.style="display: none;"
@@ -64,17 +67,16 @@ function doStuff(blob) {
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
 	let image = new Image()
-	let frame2 = createImage(512, 512)
-	let frame3 = createImage(512, 512)
-	let frame4 = createImage(512, 512)
-	let frame5 = createImage(512, 512)
+	let scratchPad = []
+	for (let i = 0; i < 8; i++) {
+		scratchPad[i] = createImage(512, 512) // set up a few canvases to work on
+	}
 	image.src = blob
 	image.onload = function() {
 		ctx.fillStyle = "#FFF"
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
 		drawAspectCorrected(image, ctx)
-		// handle green screen overlay separately from implode/explode
-		if (greenscreen) {
+		if (greenscreen) { // handle "green screen" overlay separately from implode/explode
 			gif.addFrame(canvas, {delay: 160})
 			switch (gifSelect.value) {
 				case "airstrikes":
@@ -103,23 +105,56 @@ function doStuff(blob) {
 					break
 				}
 		} else {
-			// implosion has a bit of an exponential curve to it because i like the look, otherwise it feels too slow.
-			if (implode) {
-				explode(-25, .5, canvas, frame2)
-				explode(-50, .5, canvas, frame3)
-				explode(-100, .5, canvas, frame4)
-				explode(-200, .5, canvas, frame5)
-			} else {
-				explode(10, .5, canvas, frame2)
-				explode(20, .5, canvas, frame3)
-				explode(50, .5, canvas, frame4)
-				explode(100, .5, canvas, frame5)
+			switch (implode) {
+				case "implode": // implosion has a bit more of an exponential curve to it because i like the look, otherwise it feels too slow.
+					explode(-25, .5, canvas, scratchPad[0])
+					explode(-50, .5, canvas, scratchPad[1])
+					explode(-100, .5, canvas, scratchPad[2])
+					explode(-200, .5, canvas, scratchPad[3])
+					gif.addFrame(canvas, {delay: 40})
+					gif.addFrame(scratchPad[0], {delay: 40})
+					gif.addFrame(scratchPad[1], {delay: 40})
+					gif.addFrame(scratchPad[2], {delay: 40})
+					gif.addFrame(scratchPad[3], {delay: 40})
+					break
+				case "wibble": // https://www.youtube.com/watch?v=i4SH6RSL3Ig
+					explode(10, .5, canvas, scratchPad[0])
+					explode(20, .5, canvas, scratchPad[1])
+					explode(50, .5, canvas, scratchPad[2])
+					explode(75, .5, canvas, scratchPad[3])
+					explode(-20, .5, canvas, scratchPad[4])
+					explode(-50, .5, canvas, scratchPad[5])
+					explode(-75, .5, canvas, scratchPad[6])
+					explode(-100, .5, canvas, scratchPad[7])
+					gif.addFrame(canvas, {delay: 20})
+					gif.addFrame(scratchPad[0], {delay: 30})
+					gif.addFrame(scratchPad[1], {delay: 40})
+					gif.addFrame(scratchPad[2], {delay: 60})
+					gif.addFrame(scratchPad[3], {delay: 80})
+					gif.addFrame(scratchPad[2], {delay: 60})
+					gif.addFrame(scratchPad[1], {delay: 40})
+					gif.addFrame(scratchPad[0], {delay: 30})
+					gif.addFrame(canvas, {delay: 20})
+					gif.addFrame(scratchPad[4], {delay: 20})
+					gif.addFrame(scratchPad[5], {delay: 30})
+					gif.addFrame(scratchPad[6], {delay: 30})
+					gif.addFrame(scratchPad[7], {delay: 40})
+					gif.addFrame(scratchPad[6], {delay: 30})
+					gif.addFrame(scratchPad[5], {delay: 30})
+					gif.addFrame(scratchPad[4], {delay: 20})
+					break
+				default:
+					explode(10, .5, canvas, scratchPad[0])
+					explode(20, .5, canvas, scratchPad[1])
+					explode(50, .5, canvas, scratchPad[2])
+					explode(100, .5, canvas, scratchPad[3])
+					gif.addFrame(canvas, {delay: 40})
+					gif.addFrame(scratchPad[0], {delay: 40})
+					gif.addFrame(scratchPad[1], {delay: 40})
+					gif.addFrame(scratchPad[2], {delay: 40})
+					gif.addFrame(scratchPad[3], {delay: 40})
+					break
 			}
-			gif.addFrame(canvas, {delay: 40})
-			gif.addFrame(frame2, {delay: 40})
-			gif.addFrame(frame3, {delay: 40})
-			gif.addFrame(frame4, {delay: 40})
-			gif.addFrame(frame5, {delay: 40})
 			// TODO: generate this switch dynamically
 			switch (gifSelect.value) { // check selected explosion and add frames
 				case "boom": 
