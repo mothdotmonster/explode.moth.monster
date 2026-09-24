@@ -1,4 +1,4 @@
-// Copyright 2024 Chesapeake [moth.monster]
+// Copyright 2024-2026 Chesapeake [moth.monster]
 // SPDX-License-Identifier: MIT-0
 
 let fileInput = document.getElementById("upload")
